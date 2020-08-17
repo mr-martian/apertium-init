@@ -2,11 +2,15 @@ SHELL := /bin/bash
 TRAVIS_PYTHON_VERSION ?= $(shell python3 --version | cut -d ' ' -f 2)
 PREFIX ?= /usr/local
 
-all:
+all: apertium-init.py
 	./any-module/updateBootstraper.py
 	./bilingual-module/updateBootstraper.py
 	./hfst-language-module/updateBootstraper.py
 	./lttoolbox-language-module/updateBootstraper.py
+
+apertium-init.py: main.py
+	cp $< $@
+	./updateBootstraper.py
 
 apertium_init.py: apertium-init.py
 	cp $< $@
@@ -36,4 +40,4 @@ install:
 	install -m755 apertium-init.py $(DESTDIR)$(PREFIX)/bin/apertium-init
 
 clean:
-	rm -rf dist/ build/ *.egg-info/ .mypy_cache/ apertium_init.py
+	rm -rf dist/ build/ *.egg-info/ .mypy_cache/ apertium-init.py apertium_init.py
